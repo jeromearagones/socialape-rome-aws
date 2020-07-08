@@ -111,10 +111,11 @@ exports.uploadImage = (req, res) => {
         // image.png 
         const imageExtension = filename.split(`.`)[filename.split(`.`).length - 1];
         // 34242432341234.png
-        const imageFileName = `${Math.round(Math.random()*100000000000)}.${imageExtension}`;
+        imageFileName = `${Math.round(Math.random()*100000000000)}.${imageExtension}`;
         const filepath = path.join(os.tmpdir(), imageFileName);
         imageToBeUploaded = { filepath, mimetype };
         file.pipe(fs.createWriteStream(filepath));
+        console.log(imageFileName); //debug
     });
     busboy.on('finish', () => {
         admin.storage().bucket().upload(imageToBeUploaded.filepath, {
@@ -127,6 +128,7 @@ exports.uploadImage = (req, res) => {
         })
         .then(() => {
             const imageURL = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imageFileName}?alt=media`;
+            console.log(imageURL); //debug
             return db.doc(`/users/${req.user.handle}`).update({ imageURL });
         })
         .then(() => {
