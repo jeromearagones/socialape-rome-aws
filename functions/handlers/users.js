@@ -115,7 +115,6 @@ exports.uploadImage = (req, res) => {
         const filepath = path.join(os.tmpdir(), imageFileName);
         imageToBeUploaded = { filepath, mimetype };
         file.pipe(fs.createWriteStream(filepath));
-        console.log(imageFileName); //debug
     });
     busboy.on('finish', () => {
         admin.storage().bucket().upload(imageToBeUploaded.filepath, {
@@ -128,7 +127,6 @@ exports.uploadImage = (req, res) => {
         })
         .then(() => {
             const imageURL = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imageFileName}?alt=media`;
-            console.log(imageURL); //debug
             return db.doc(`/users/${req.user.handle}`).update({ imageURL });
         })
         .then(() => {
