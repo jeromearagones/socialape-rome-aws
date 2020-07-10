@@ -1,6 +1,6 @@
 const functions = require(`firebase-functions`);
 
-var serviceAccount = require("../socialape-rome-aws-firebase-adminsdk-lzqxf-e3f8eb4559.json");
+//var serviceAccount = require("../socialape-rome-aws-firebase-adminsdk-lzqxf-e3f8eb4559.json");
 
 const app = require(`express`)();
 

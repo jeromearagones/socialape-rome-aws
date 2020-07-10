@@ -79,18 +79,18 @@ exports.login = (req, res) => {
     firebase
         .auth()
         .signInWithEmailAndPassword(user.email, user.password)
-        .then(data => {
+        .then((data) => {
             return data.user.getIdToken();
         })
-        .then(token => {
+        .then((token) => {
             return res.json({ token });
         })
         .catch(err => {
             console.error(err);
-            if(err.code === `auth/wrong-password`){
+            if(err.code === `auth/wrong-password` || err.code === `auth/user-not-found`){
                 return res
                 .status(403)
-                .json({ general: `Wrong credentials, please try again`})
+                .json({general: `Wrong credentials, please try again`});
             } else return res.status(500).json({error: err.code });
         });
 }
